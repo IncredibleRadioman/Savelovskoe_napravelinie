@@ -3,9 +3,16 @@ function [x,z,outSignal,time] = getCoordinatesOfObject(x1,z1,Vx1,Vz1,f0,fs,tdisc
 phi_main = 30; %ширина ДН по азимуту
 k_phi = pi/(phi_main*pi/180/2); %коэффициент ДН
 discrete = 5; %дискрет углов
-c = 3e8; %скорость света
+c = physconst('LightSpeed'); %скорость света
 timp = tdiscrete * length(s0); %длительность импульса
 T = timp * Q;
+R_razr = tdiscrete*c/2;
+R_min = timp*c/2;
+R_max = T*c/2;
+disp(['Дальность до цели ' num2str(sqrt(x1^2+z1^2))]);
+disp(['Однозначная дальность ' num2str(R_max)]);
+disp(['Минимальная дальность ' num2str(R_min)]);
+disp(['Дискрет дальности ' num2str(R_razr)]);
 %найдем угол ДН
 if(z1>=0)&&(x1>=0)
     phi_true = atan(z1/x1);
@@ -62,9 +69,10 @@ SQ = imag(S);
 %СФ
 Scode = Decoder(fs,s0,timp,T,T_standing);
 
-SI = SI.*Scode;
-SQ = SQ.*Scode;
-S = SI + 1i*SQ;
+SI = SI.*abs(Scode);
+SQ = SQ.*abs(Scode);
+% S = (SI + 1i*SQ).*Scode;
+S = (SI + 1i*SQ);
 
 signal = fftshift(abs(ifft(S)));
 % signalI = abs(signalI);
