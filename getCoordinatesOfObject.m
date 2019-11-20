@@ -1,12 +1,11 @@
-function [x,z,I,Q,S_I,S_Q,time] = getCoordinatesOfObject(x1,z1,Vx1,Vz1,f0,fs,T_standing,SNR,T)
+function [x,z,outSignal,time] = getCoordinatesOfObject(x1,z1,Vx1,Vz1,f0,fs,tdiscrete,T_standing,SNR,s0,Q)
 
 phi_main = 30; %ширина ДН по азимуту
 k_phi = pi/(phi_main*pi/180/2); %коэффициент ДН
 discrete = 5; %дискрет углов
-s0 = [1 1 1 -1 1]; %кодирующая последовательность
 c = 3e8; %скорость света
-Q = 36; %скважность импульса
-timp = T/Q; %длительность импульса
+timp = tdiscrete * length(s0); %длительность импульса
+T = timp * Q;
 %найдем угол ДН
 if(z1>=0)&&(x1>=0)
     phi_true = atan(z1/x1);
@@ -67,30 +66,21 @@ SI = SI.*Scode;
 SQ = SQ.*Scode;
 S = SI + 1i*SQ;
 
-signal = ifft(S);
-signalI = fftshift(real(signal));
-signalQ = fftshift(imag(signal));
+signal = fftshift(abs(ifft(S)));
 % signalI = abs(signalI);
 % signalQ = abs(signalQ);
-[M,idxI] = max(signalI);
-[M,idxQ] = max(signalQ);
+[~,idx] = max(signal);
 
-tI = (idxI-1)/fs;
-tQ = (idxQ-1)/fs;
+tau = (idx-1)/fs;
 
 
-RI = c*tI/2;
-RQ = c*tQ/2;
+R = c*tau/2;
 
-R = (RI + RQ)/2;
 
 
 x = R*cos(phi);
 z = R*sin(phi);
-I = signalI;
-Q = signalQ;
-S_I = fftshift(abs(SI));
-S_Q = fftshift(abs(SQ));
+outSignal = signal;
 time = t;
 
 
