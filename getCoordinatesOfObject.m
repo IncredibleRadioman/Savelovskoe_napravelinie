@@ -35,7 +35,11 @@ phi = deg2rad(phi);
 R = sqrt(x1^2 + z1^2);
 delay = 2*R/c;
 %амплитуда
-a = abs( ( sin(k_phi*(phi_true-phi)) ) / ( ( k_phi*(phi_true-phi)) ) );
+if((phi_true-phi)~=0)
+    a = abs( ( sin(k_phi*(phi_true-phi)) ) / ( ( k_phi*(phi_true-phi)) ) );
+else
+    a = 1;
+end
 %вычислим доплеровский сдвиг
 %находим проекцию вектора скорости на линию визирования
 v = Vx1*cos(phi) + Vz1*sin(phi);

@@ -3,16 +3,16 @@ clc
 close all
 %%
 c = physconst('LightSpeed');
-x1 = 0.5e3;
-z1 = 0.2e3;
+x1 = 1e3;
+z1 = 0e3;
 Vx1 = 100;
 Vz1 = 0;
 f0 = 1e9;
 fs = 4*f0;
-T_standing = 1.5e-4;
-SNR = 20;
-tdiscrete = 0.8e-7;
-Q = 25;
+T_standing = 2e-4;
+SNR = -20;
+tdiscrete = 0.6e-7;
+Q = 50;
 s0 = [1, 1, 1, -1, 1];
 % R_razr = tdiscrete*c/2;
 % R_min = tdiscrete*length(s0)*c/2;

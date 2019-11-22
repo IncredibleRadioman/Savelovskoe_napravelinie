@@ -1,6 +1,7 @@
 function Scode = Decoder(fs,s0,timp,T,T_standing)
 
-t0 = T_standing/2;
+% t0 = T_standing/2;s
+t0 = timp/2;
 %вычислим длительность одного символа последовательности
 tsym = timp/length(s0);
 %вектор времени символа
@@ -36,7 +37,7 @@ S = fft(simp);
 step = fs/length(S);
 freq = -fs/2:step:fs/2-step;
 %КЧХ фильтра
-Scode = conj(S).*exp(-1i*2*pi*freq*t0);
+Scode = conj(S).*exp(1i*2*pi*freq*t0);
 
 
 end
